@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production! git.heroku.com/grocerry-bag.git
 DEBUG = config('DEBUG', default='False', cast=bool)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'grocerry-bag.herokuapp.com/']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'grocerry-bag.herokuapp.com']
 
 LOGIN_URL = '/accounts/signin'
 
