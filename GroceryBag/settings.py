@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = '3botw+=pox-e*h31lb&r*x8bl^ayfk720$z-!n_va+viegtha8'
 SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('SECRET_KEY')
+# SECURITY WARNING: don't run with debug turned on in production! git.heroku.com/grocerry-bag.git
+DEBUG = config('DEBUG', default='False', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'grocerry-bag.herokuapp.com/']
 
 LOGIN_URL = '/accounts/signin'
 
@@ -45,6 +45,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # Add Whitenoise middleware here
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -83,6 +85,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -123,6 +129,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "staticfiles/"),)
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = (os.path.join(BASE_DIR, "media/"))

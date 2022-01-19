@@ -18,7 +18,7 @@ def homepage(request):
         pass
     context = {
         'items': items,
-        'date': getdate,
+        'getdate': getdate,
     }
     return render(request, "index.html", context)
 
