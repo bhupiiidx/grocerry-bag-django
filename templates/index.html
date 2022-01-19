@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}View Bag{% endblock title %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- top -->
+    <div class="row">
+        <div class="col-lg-6">
+            <h1>View Grocery List</h1>
+        </div>
+        <div class="col-lg-6 float-right">
+            <form action="">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <!-- Date Filtering-->
+                        <input type="date" class="form-control" name="date" placeholder="" required value="{{ getdate }}">
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="submit" class="btn btn-danger" value="filter {{ getdate }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- // top -->
+    <div class="card-group">
+        <!-- Grocery Cards -->
+        <div class="row mt-4 w-100">
+            <!--- -->
+            <!-- Loop This -->
+        <!-- // Loop -->
+            {% for context in items %}
+                <div class="col-lg-4 my-2">
+                    <div class="card">
+                        <div class="card-body">
+                            {% if context.status == 'BOUGHT' %}
+    
+                            <!-- BOUGHT -->
+                            <h5 class="card-title">{{context.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{context.quantity }}</h6>
+                            <p class="text-success">{{context.status}}</p>
+    
+                            {% elif context.status == 'PENDING'%}
+    
+                            <!-- PENDING -->
+                            <h5 class="card-title">{{context.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{context.quantity }}</h6>
+                            <p class="text-info">{{context.status }}</p>
+    
+    
+                            {% else %}
+                            <!-- NOT AVAILABLE -->
+    
+                            <h5 class="card-title">{{context.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{context.quantity }}</h6>
+                            <p class="text-danger">{{context.status }}</p>
+    
+    
+                            {% endif %}
+    
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a href="{% url 'update-item' context.id %}">
+                                        <button type="button" class="btn btn-primary">UPDATE</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{% url 'delete-item' context.id %}">
+                                        <button type="button" class="btn btn-danger">DELETE</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                {% if not request.user.is_authenticated %}
+                    <div class="col-lg-12">
+                        <div class="card " style="border: 2px dashed #6c757d61;">
+                            <div class="card-body">
+                                <p class="text-secondary text-center">
+                                    Please Login to see your Grocery List. 
+                                </p>
+                                <div class="text-center">
+                                    <a href="/accounts/signin/">
+                                        <button type="button" class="btn btn-primary">Login</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+    
+            {% if request.user.is_authenticated %}
+                <div class="col-lg-4 my-2">
+                    <a href="/add-item/" style="text-decoration:none;color: rgb(138, 138, 138);">
+                        <div class="card h-100" style="border: 2px dashed #6c757d61;">
+                            <div class="card-body h-100 bg-light">
+                                <div class="d-flex align-items-center justify-content-center h-100">
+                                    <p>Add Grocery Item</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+{% endblock extra_js %}
